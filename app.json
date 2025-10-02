@@ -40,7 +40,15 @@
           }
         }
       ],
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "food-app",
+          "organization": "paytrack-rn"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
