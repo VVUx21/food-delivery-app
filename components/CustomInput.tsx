@@ -13,7 +13,6 @@ const CustomInput = ({
 }: CustomInputProps) => {
     const [isFocused, setIsFocused] = useState(false);
 
-
     return (
         <View className="w-full">
             <Text className="label">{label}</Text>

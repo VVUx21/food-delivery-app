@@ -1,11 +1,18 @@
-import { View, Text } from 'react-native'
+import { View, Text, Button } from 'react-native'
 import React from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import seed from '@/lib/seed'
 
 const search = () => {
   return (
-    <View>
+    <SafeAreaView className="flex-1 justify-center items-center">
       <Text>search</Text>
-    </View>
+      <View>
+        <Button title='Seed Data' onPress={async () => {
+          await seed();
+        }} />
+      </View>
+    </SafeAreaView>
   )
 }
 
