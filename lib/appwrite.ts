@@ -2,16 +2,16 @@ import {Account, Avatars, Client, Databases, ID, Query, Storage} from "react-nat
 import {CreateUserParams, GetMenuParams, SignInParams} from "@/type";
 
 export const appwriteConfig = {
-  endpoint: process.env.APPWRITE_ENDPOINT!,
-  projectId: process.env.APPWRITE_PROJECT_ID!,
-  platform: process.env.APPWRITE_PLATFORM!,
-  databaseId: process.env.APPWRITE_DATABASE_ID!,
-  bucketId: process.env.APPWRITE_BUCKET_ID!,
-  userCollectionId: process.env.APPWRITE_USER_COLLECTION_ID!,
-  categoriesCollectionId: process.env.APPWRITE_CATEGORIES_COLLECTION_ID!,
-  menuCollectionId: process.env.APPWRITE_MENU_COLLECTION_ID!,
-  customizationCollectionId: process.env.APPWRITE_CUSTOMIZATION_COLLECTION_ID!,
-  menucustomizationCollectionId: process.env.APPWRITE_MENU_CUSTOMIZATION_COLLECTION_ID!,
+  endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
+  projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!,
+  platform: process.env.EXPO_PUBLIC_APPWRITE_PLATFORM!,
+  databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!,
+  bucketId: process.env.EXPO_PUBLIC_APPWRITE_BUCKET_ID!,
+  userCollectionId: process.env.EXPO_PUBLIC_APPWRITE_USER_COLLECTION_ID!,
+  categoriesCollectionId: process.env.EXPO_PUBLIC_APPWRITE_CATEGORIES_COLLECTION_ID!,
+  menuCollectionId: process.env.EXPO_PUBLIC_APPWRITE_MENU_COLLECTION_ID!,
+  customizationCollectionId: process.env.EXPO_PUBLIC_APPWRITE_CUSTOMIZATION_COLLECTION_ID!,
+  menucustomizationCollectionId: process.env.EXPO_PUBLIC_APPWRITE_MENU_CUSTOMIZATION_COLLECTION_ID!,
 };
 
 export const client = new Client();
