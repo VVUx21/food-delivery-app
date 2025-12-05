@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import {getCurrentUser} from "@/lib/appwrite";
+import { logout as appwriteLogout, getCurrentUser } from "@/lib/appwrite";
 import { User } from '@/type';
+import { create } from 'zustand';
 
 type AuthState = {
     isAuthenticated: boolean;
@@ -12,6 +12,7 @@ type AuthState = {
     setLoading: (loading: boolean) => void;
 
     fetchAuthenticatedUser: () => Promise<void>;
+    logout: () => Promise<void>;
 }
 
 const useAuthStore = create<AuthState>((set) => ({
@@ -36,6 +37,16 @@ const useAuthStore = create<AuthState>((set) => ({
             set({ isAuthenticated: false, user: null })
         } finally {
             set({ isLoading: false });
+        }
+    },
+
+    logout: async () => {
+        try {
+            await appwriteLogout();
+            set({ isAuthenticated: false, user: null });
+        } catch (e) {
+            console.log('logout error', e);
+            throw e;
         }
     }
 }))

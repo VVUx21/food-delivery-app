@@ -1,5 +1,5 @@
-import {Account, Avatars, Client, Databases, ID, Query, Storage} from "react-native-appwrite";
-import {CreateUserParams, GetMenuParams, SignInParams} from "@/type";
+import { CreateUserParams, GetMenuParams, SignInParams } from "@/type";
+import { Account, Avatars, Client, Databases, ID, Query, Storage } from "react-native-appwrite";
 
 export const appwriteConfig = {
   endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
@@ -49,6 +49,14 @@ export const createUser = async ({ email, password, name }: CreateUserParams) =>
 export const signIn = async ({ email, password }: SignInParams) => {
     try {
         const session = await account.createEmailPasswordSession(email, password);
+    } catch (e) {
+        throw new Error(e as string);
+    }
+}
+
+export const logout = async () => {
+    try {
+        await account.deleteSession('current');
     } catch (e) {
         throw new Error(e as string);
     }
