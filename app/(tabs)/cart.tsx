@@ -1,11 +1,13 @@
-import {View, Text, FlatList} from 'react-native'
-import {SafeAreaView} from "react-native-safe-area-context";
-import {useCartStore} from "@/store/cart.store";
-import CustomHeader from "@/components/CustomHeader";
-import cn from "clsx";
 import CustomButton from "@/components/CustomButton";
 import CartItem from "@/components/CustomCartItem";
+import CustomHeader from "@/components/CustomHeader";
+import useAuthStore from '@/store/auth.store';
+import { useCartStore } from "@/store/cart.store";
 import { PaymentInfoStripeProps } from '@/type';
+import cn from "clsx";
+import { router } from 'expo-router';
+import { Alert, FlatList, Text, View } from 'react-native';
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const PaymentInfoStripe = ({ label,  value,  labelStyle,  valueStyle, }: PaymentInfoStripeProps) => (
     <View className="flex-between flex-row my-1">
@@ -19,10 +21,36 @@ const PaymentInfoStripe = ({ label,  value,  labelStyle,  valueStyle, }: Payment
 );
 
 const Cart = () => {
-    const { items, getTotalItems, getTotalPrice } = useCartStore();
+    const { items, getTotalItems, getTotalPrice, clearCart } = useCartStore();
+    const { user } = useAuthStore();
 
     const totalItems = getTotalItems();
     const totalPrice = getTotalPrice();
+    const deliveryFee = 5.00;
+    const discount = 0.50;
+    const finalTotal = totalPrice + deliveryFee - discount;
+
+    const handlePayment = () => {
+        if (!user) {
+            Alert.alert('Login Required', 'Please login to complete your order.');
+            router.push('/(auth)/sign-in');
+            return;
+        }
+
+        if (totalItems === 0) {
+            Alert.alert('Empty Cart', 'Please add items to your cart first.');
+            return;
+        }
+
+        // Navigate to payment screen with cart details
+        router.push({
+            pathname: '/payment' as any,
+            params: {
+                amount: finalTotal.toFixed(2),
+                items: totalItems.toString(),
+            }
+        });
+    };
 
     return (
         <SafeAreaView className="bg-white h-full">
@@ -62,7 +90,7 @@ const Cart = () => {
                             />
                         </View>
 
-                        <CustomButton title="Order Now" />
+                        <CustomButton title="Proceed to Payment" onPress={handlePayment} />
                     </View>
                 )}
             />

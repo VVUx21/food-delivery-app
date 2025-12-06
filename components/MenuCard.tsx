@@ -12,8 +12,8 @@ const MenuCard = ({ item: { $id, image_url, name, price }}: { item: MenuItem}) =
                 source={{ uri: image_url }} 
                 className="size-32 absolute -top-10" 
                 resizeMode="contain"
-                onError={(error) => console.log('Image load error:', error.nativeEvent.error)}
-                onLoad={() => console.log('Image loaded successfully for:', name)}
+                //onError={(error) => console.log('Image load error:', error.nativeEvent.error)}
+                //onLoad={() => console.log('Image loaded successfully for:', name)}
             />
             <Text className="text-center base-bold text-dark-100 mb-2" numberOfLines={1}>{name}</Text>
             <Text className="body-regular text-gray-200 mb-4">From ${price}</Text>

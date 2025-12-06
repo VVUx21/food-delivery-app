@@ -1,7 +1,7 @@
 import {SplashScreen, Stack} from "expo-router";
 import { useFonts } from 'expo-font';
 import { useEffect} from "react";
-
+import { StripeProvider } from '@stripe/stripe-react-native';
 import './globals.css';
 import * as Sentry from '@sentry/react-native';
 import useAuthStore from "@/store/auth.store";
@@ -44,7 +44,14 @@ export default Sentry.wrap(function RootLayout() {
 
   if(!fontsLoaded || isLoading) return null;
 
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+      <StripeProvider
+        publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY!}
+        merchantIdentifier="merchant.identifier" // required for Apple Pay
+        urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
+      >
+      <Stack screenOptions={{ headerShown: false }} />
+    </StripeProvider>);
 });
 
 Sentry.showFeedbackWidget();
