@@ -87,13 +87,22 @@ export const getMenu = async ({ category, query }: GetMenuParams) => {
         const queries: string[] = [];
 
         if(category) queries.push(Query.equal('categories', category));
-        if(query) queries.push(Query.search('name', query));
 
         const menus = await databases.listDocuments(
             appwriteConfig.databaseId,
             appwriteConfig.menuCollectionId,
             queries,
         )
+
+        // If there's a search query, filter results on the client side
+        if (query && query.trim()) {
+            const searchTerm = query.toLowerCase().trim();
+            const filteredDocuments = menus.documents.filter((item: any) => 
+                item.name?.toLowerCase().includes(searchTerm) ||
+                item.description?.toLowerCase().includes(searchTerm)
+            );
+            return filteredDocuments;
+        }
 
         return menus.documents;
     } catch (e) {
