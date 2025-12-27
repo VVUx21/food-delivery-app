@@ -1,5 +1,6 @@
 import CustomButton from '@/components/CustomButton';
 import CustomHeader from '@/components/CustomHeader';
+import { sendOrderConfirmationEmail } from '@/lib/email';
 import { createPaymentIntent } from '@/lib/stripe';
 import useAuthStore from '@/store/auth.store';
 import { useCartStore } from '@/store/cart.store';
@@ -77,9 +78,25 @@ const PaymentScreen = () => {
       if (error) {
         Alert.alert('Payment Failed', error.message);
       } else {
+        // Send order confirmation email
+        try {
+          await sendOrderConfirmationEmail({
+            email: user?.email || '',
+            name: user?.name || 'Customer',
+            orderDetails: {
+              items: items || '0',
+              amount: amount || '0',
+              orderDate: new Date().toLocaleString(),
+            },
+          });
+          console.log('Order confirmation email sent successfully');
+        } catch (emailError: any) {
+          console.error('Failed to send confirmation email:', emailError);
+        }
+
         Alert.alert(
           'Payment Successful',
-          'Your order has been placed successfully!',
+          'Your order has been placed successfully! A confirmation email has been sent to your email address.',
           [
             {
               text: 'OK',
