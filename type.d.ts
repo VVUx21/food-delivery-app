@@ -9,6 +9,19 @@ export interface MenuItem extends Models.Document {
     protein: number;
     rating: number;
     type: string;
+    bun_type?: string;
+    categories?: string;
+}
+
+export interface Customization extends Models.Document {
+    name: string;
+    price: number;
+    type: 'topping' | 'side' | 'size' | 'crust' | string;
+}
+
+export interface MenuCustomization extends Models.Document {
+    menu: string;
+    customization: string;
 }
 
 export interface Category extends Models.Document {
@@ -26,7 +39,7 @@ export interface CartCustomization {
     id: string;
     name: string;
     price: number;
-    type: string;
+    type: 'topping' | 'side' | 'size' | 'crust' | string;
 }
 
 export interface CartItemType {

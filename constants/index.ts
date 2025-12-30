@@ -131,7 +131,7 @@ export const toppings = [
         price: 2.0,
     },
     {
-        name: "Cheese",
+        name: "Extra Cheese",
         image: cheese,
         price: 1.0,
     },

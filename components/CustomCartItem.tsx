@@ -1,10 +1,16 @@
+import { images } from "@/constants";
 import { useCartStore } from "@/store/cart.store";
 import { CartItemType } from "@/type";
 import { Image, Text, TouchableOpacity, View } from "react-native";
-import {images} from "@/constants";
 
 const CartItem = ({ item }: { item: CartItemType }) => {
     const { increaseQty, decreaseQty, removeItem } = useCartStore();
+
+    const hasCustomizations = item.customizations && item.customizations.length > 0;
+    const customizationsPrice = hasCustomizations 
+        ? item.customizations!.reduce((sum, c) => sum + c.price, 0) 
+        : 0;
+    const totalItemPrice = item.price + customizationsPrice;
 
     return (
         <View className="cart-item">
@@ -17,11 +23,37 @@ const CartItem = ({ item }: { item: CartItemType }) => {
                     />
                 </View>
 
-                <View>
+                <View className="flex-1">
                     <Text className="base-bold text-dark-100">{item.name}</Text>
-                    <Text className="paragraph-bold text-primary mt-1">
-                        ${item.price}
-                    </Text>
+                    
+                    {hasCustomizations && (
+                        <View className="mt-1 mb-1">
+                            <Text className="text-xs text-gray-500 mb-0.5">Customizations:</Text>
+                            {item.customizations!.map((customization) => (
+                                <View key={customization.id} className="flex-row items-center gap-1">
+                                    <Text className="text-xs text-gray-600">
+                                        • {customization.name}
+                                    </Text>
+                                    {customization.price > 0 && (
+                                        <Text className="text-xs text-primary font-semibold">
+                                            (+${customization.price.toFixed(2)})
+                                        </Text>
+                                    )}
+                                </View>
+                            ))}
+                        </View>
+                    )}
+                    
+                    <View className="flex-row items-center gap-2">
+                        <Text className="paragraph-bold text-primary">
+                            ${totalItemPrice.toFixed(2)}
+                        </Text>
+                        {hasCustomizations && (
+                            <Text className="text-xs text-gray-400 line-through">
+                                ${item.price.toFixed(2)}
+                            </Text>
+                        )}
+                    </View>
 
                     <View className="flex flex-row items-center gap-x-4 mt-2">
                         <TouchableOpacity

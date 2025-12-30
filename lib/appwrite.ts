@@ -122,3 +122,73 @@ export const getCategories = async () => {
         throw new Error(e as string);
     }
 }
+
+export const getMenuItemById = async (id: string) => {
+    try {
+        const menuItem = await databases.getDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.menuCollectionId,
+            id
+        );
+
+        return menuItem;
+    } catch (e) {
+        console.log('getMenuItemById error:', e);
+        throw new Error(e as string);
+    }
+}
+
+export const getMenuItemCustomizations = async (menuId: string) => {
+    try {
+        // Get menu-customization relationships
+        const menuCustomizations = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.menucustomizationCollectionId,
+            [Query.equal('menu', menuId)]
+        );
+
+        if (menuCustomizations.documents.length === 0) {
+            return [];
+        }
+
+        // Get all customization IDs
+        const customizationIds = menuCustomizations.documents.map(
+            (doc: any) => doc.customization
+        );
+
+        // Fetch all customizations
+        const customizations = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.customizationCollectionId,
+            [Query.equal('$id', customizationIds)]
+        );
+
+        return customizations.documents;
+    } catch (e) {
+        console.log('getMenuItemCustomizations error:', e);
+        throw new Error(e as string);
+    }
+}
+
+export const getSimilarMenuItems = async (categoryId: string, currentItemId: string, limit: number = 6) => {
+    try {
+        const queries = [Query.equal('categories', categoryId)];
+        
+        const menuItems = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.menuCollectionId,
+            queries
+        );
+
+        // Filter out current item and limit results
+        const similarItems = menuItems.documents
+            .filter((item: any) => item.$id !== currentItemId)
+            .slice(0, limit);
+
+        return similarItems;
+    } catch (e) {
+        console.log('getSimilarMenuItems error:', e);
+        throw new Error(e as string);
+    }
+}
+

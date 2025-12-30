@@ -12,7 +12,6 @@ return (
             data={offers}
             renderItem={({ item, index }) => {
             const isEven = index % 2 === 0;
-
                 return (
                     <View>
                         <Pressable
@@ -53,7 +52,6 @@ return (
                             <Image source={images.arrowDown} className="size-3" resizeMode="contain" />
                         </TouchableOpacity>
                     </View>
-
                     <CartButton />
                 </View>
             )}

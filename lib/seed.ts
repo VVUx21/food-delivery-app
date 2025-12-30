@@ -1,7 +1,7 @@
+import * as FileSystem from 'expo-file-system';
 import { ID } from "react-native-appwrite";
 import { appwriteConfig, databases, storage } from "./appwrite";
 import dummyData from "./data";
-import * as FileSystem from 'expo-file-system';
 
 interface Category {
   name: string;
@@ -22,6 +22,7 @@ interface MenuItem {
   rating: number;
   calories: number;
   protein: number;
+  bun_type?: string;
   category_name: string;
   customization: string[];
 }
@@ -188,6 +189,7 @@ async function seed(): Promise<void> {
           rating: item.rating,
           calories: item.calories,
           protein: item.protein,
+          bun_type: item.bun_type,
           categories: categoryMap[item.category_name],
         }
       );
